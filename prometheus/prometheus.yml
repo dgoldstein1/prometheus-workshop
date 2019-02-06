@@ -1,0 +1,19 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: isprime-service
+    static_configs:
+      - targets:
+        - isprime:8080
+
+  - job_name: fibonacci-service
+    static_configs:
+      - targets:
+        - fibonacci:8080

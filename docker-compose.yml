@@ -1,0 +1,32 @@
+version: '2'
+
+####################################################################
+## Local configuration for Prometheus and a few example services  ##
+####################################################################
+
+services:
+
+  #####################
+  ## Sample Services ##
+  #####################
+
+  isprime:
+    image : dgoldstein1/isprimeservice
+    ports:
+      - 7080:8080
+
+  fibonacci:
+    image : dgoldstein1/fibonacci
+    ports:
+      - 8080:8080
+  
+  ###########################
+  ## Databases and Storage ##
+  ###########################
+      
+  prom:
+    image : prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
