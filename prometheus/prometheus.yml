@@ -8,12 +8,12 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: isprime-service
+  - job_name: random-number-generator
     static_configs:
       - targets:
-        - isprime:8080
+        - random-number-generator:8080
 
-  - job_name: fibonacci-service
+  - job_name: random-wikipedia
     static_configs:
       - targets:
-        - fibonacci:8080
+        - random-wikipedia:8080

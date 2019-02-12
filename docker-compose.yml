@@ -10,15 +10,15 @@ services:
   ## Sample Services ##
   #####################
 
-  isprime:
-    image : dgoldstein1/isprimeservice
+  random-number-generator:
+    image : dgoldstein1/random-number-generator
     ports:
-      - 7080:8080
+      - 7000:8080
 
-  fibonacci:
-    image : dgoldstein1/fibonacci
+  random-wikipedia:
+    image : dgoldstein1/random-wikipedia
     ports:
-      - 8080:8080
+      - 7001:8080
   
   ###########################
   ## Databases and Storage ##
