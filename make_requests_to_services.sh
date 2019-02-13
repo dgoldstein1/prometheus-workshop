@@ -6,7 +6,7 @@ make_requests() {
     while true; do
         curl -s "$randomNumerEndpoint/randomNumber?max=10000000000" > /dev/null
         curl -s "$randomWikipediaEndpoint/randomArticle" > /dev/null
-        # sleep 1
+        sleep 1
     done
 }
 

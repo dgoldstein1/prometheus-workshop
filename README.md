@@ -1,5 +1,7 @@
 # Prometheus Workshop
 
+https://dgoldstein1.github.io/prometheus-workshop/
+
 This repo is a hands-on tutorial to become familiar with Prometheus. It consists of:
 
 1. [Introduction](#introduction)
