@@ -169,7 +169,7 @@ promhttp_metric_handler_requests_total{code="503",instance="random-wikipedia:808
 Now let's say we want to get the number of metric scrapes from 10 minutes ago for the `random-number-generator` service. We could use the modifier `offset {time}` in order to offset our data. Enter in `promhttp_metric_handler_requests_total{job="random-number-generator"} offset 10m`. You should see the values decrease for the 200-level responses, since we are looking at historical data:
 
 ```
-promhttp_metric_handler_requests_total{code="200",instance="random-number-generator:8080",job="random-number-generator"}	77
+promhttp_metric_handler_requests_total{code="200",instance="random-number-generator:8080",job="random-number-generator"}	3
 promhttp_metric_handler_requests_total{code="500",instance="random-number-generator:8080",job="random-number-generator"}	0
 promhttp_metric_handler_requests_total{code="503",instance="random-number-generator:8080",job="random-number-generator"}	0
 ```
