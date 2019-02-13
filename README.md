@@ -20,6 +20,12 @@ Prometheus is a time series database which monitors service metrics easily and e
 
 ### Getting Started
 
+Start by cloning the `prometheus-workshop` repo.
+
+```sh
+git clone git@github.com:dgoldstein1/prometheus-workshop.git
+```
+
 Let's get our local environment up and running. In this example, Prometheus is inside its own docker image, so we won't need to install any binaries. Run the following to pull and start all the containers:
 
 ```sh
