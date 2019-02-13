@@ -198,7 +198,7 @@ Element	Value
 
 This tells us that the average across all services is currently 18.3. Note the `{}`. This means that there are no labels in this value, or that there are no specific jobs, instances, or other labels associated with this response.
 
-Now let's get the average number of go routines over the last 5 minutes. If we type in `go_goroutines[5m]` we can see the raw metrics for each service's number of go routines over the last 5 minutes. Each number and timestamp here indicates a real metric after a scrape. This type of data is different than the output of `avg(go_goroutines)`. `avg(go_goroutines)` outputs an **instant** vector, or one-dimensional array, while `go_goroutines[5m]` outputs a **range vector** or two-dimensional array.
+Now let's get the average number of go routines over the last 5 minutes. If we type in `go_goroutines[5m]` we can see the raw metrics for each service's number of go routines over the last 5 minutes. Each number and timestamp here indicates a real metric after a scrape. This type of data is different than the output of `avg(go_goroutines)`. `avg(go_goroutines)` outputs an **instant vector**, or one-dimensional array, while `go_goroutines[5m]` outputs a **range vector** or two-dimensional array.
 
 To get the average `go_goroutines` over the last 5 minutes, we will want to iterate over the range vector `go_goroutines[5m]` and output the average (e.g. total number of routines / number of scrapes). To do this, we will use Prometheus's `rate` function. `rate` takes in a range vector and outputs the per-second rate.
 
@@ -225,7 +225,14 @@ Element	Value
 
 For more information on rates and averages, see [the Prometheus docs on functions](https://prometheus.io/docs/prometheus/latest/querying/functions/).
 
-*Note -- in the real world it's not a good idea to use `rate` with a gauge like `go_goroutines`. They should only be used with counters.*
+*Note -- in the real world it's not a good idea to use `rate` with a gauge like `go_goroutines`. `rate` should only be used with counters.*
+
+#### Checkpoint
+
+- what does `go_goroutines[5m]` give you? How is this different than `go_goroutines`?
+- what is the difference between `avg(rate(go_goroutines[5m]))` and `avg(go_goroutines)`?
+- what is the diffence between `sum(go_goroutines)` and `sum(go_goroutines) by (job)`?
+- what is the difference bewtween `avg(rate(go_goroutines[5m]))` and `sum(rate(go_goroutines[5m]))`?
 
 ## Hands On Learning
 
@@ -247,8 +254,8 @@ What is this doing? Take a second to work through this logic.
 
 - `go_goroutines{job=~"random.*"}[1m]` -> first we take all the metrics for `go_goroutines` over the last minute that have the `job` label `random*` (i.e. everything but prometheus)
 - `avg_over_time(go_goroutines{job=~"random.*"}[1m])` -> then we take the average of all these values using `avg_over_time`. We use that instead of `avg` because `avg_over_time` takes a range vector, whereas `avg` takes an instant vector (see [docs](https://prometheus.io/docs/prometheus/latest/querying/functions/#aggregation_over_time))
-- `avg_over_time(go_goroutines{job=~"random.*"}[1m] offset 5m)` then we do the same thing, but starting *5 minutes ago*
-- last, we git the difference of the current average and the average 5 minutes ago. This tells us how much the number of go routines have changed in the last five minutes. Because we haven't changed anything, all our data should be close to zero. The closer to zero we can get, the more stable our baseline (control) is.
+- `avg_over_time(go_goroutines{job=~"random.*"}[1m] offset 5m)` -> do the same thing, but starting *5 minutes ago*
+- last, we get the difference of the current average and the average 5 minutes ago. This tells us how much the number of go routines have changed in the last five minutes. Because we haven't changed anything, all our data should be close to zero. The closer to zero we can get, the more stable our baseline (control) is.
 
 ```
 Element	Value
@@ -259,7 +266,9 @@ Element	Value
 Now let's run our experiment. We can start by commenting out `sleep 1` in `make_requests_to_services.sh`. This will increase out request rate / second to infinity so that we can see a measurable effect on the increase of go routines. Once you've commented out that line, restart `make_requests_to_services.sh`. Wait five minutes, and then run the same query again. 
 
 - If you don't want to wait you can modify the query to have an offset of `1m`, but `5m` gives a more definitive result
-- If you're not really seeing any changes, it's possible you're not making enough requests, try running more than one instance of `make_requests_to_services.sh`
+- If you're not really seeing any changes, it's possible you're not making enough requests, try running more than one instance of `
+
+make_requests_to_services.sh`
 
 ```
 {instance="random-number-generator:8080",job="random-number-generator"}	
@@ -277,6 +286,11 @@ This graph shows us our query over time. Since our query is showing the rate of 
 What does this time derivative show us? Between 16:05-16:15, we have a ten minute baseline where the number of go routines doesn't change. For the wikipedia service, from 16:15-16:20, out rate of change increases, telling us that the number of go routines is increasing. At 16:20 or so, our rate of change levels off, telling us that the number of go routines is no longer increasing and has started to reach a "stable" state. As expected, the random-number generator doesn't increase in go routines.
 
 The reason (I believe) what the wikipedia service behaves differently from the random-number service is because the wikipedia service makes an external call to wikipedia (expensive) while all the random-number service has to do is generate random byte with a unix timestamp. In essence, these data provide us with evidence that the random-number services *scales* much better than the wikipedia service.
+
+If you're curious about this, you can look into the source code for each service to see how they're structured:
+
+- [random-wikipedia](https://github.com/dgoldstein1/random-wikipedia/blob/master/random-wiki.go)
+- [random-number](https://github.com/dgoldstein1/random-number-generator/blob/master/number_generator.go)
 
 Here are some questions which you can answer, building on the skills exercised above:
 
