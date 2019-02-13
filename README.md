@@ -2,17 +2,17 @@
 
 This repo is a hands-on tutorial to become familiar with Prometheus. It consists of:
 
-1. [Introduction](#Introduction)
-	1. [Getting Started](#Getting-Started)
-	2. [Getting Oriented](#Getting-Oriented)
-	3. [PromQL Metrics](#PromQL-Metrics)
-	4. [PromQL Queries](#PromQL-Queries)
-2. [Hands On Learning](#Hands-On-Learning)
-	1. [Activity](#Activity)
-	2. [Challenge](#Challenge)
-	3. [Additional Resources](#Additional-Resources)
-3. [Authors](#Authors)
-4. [License](#License)
+1. [Introduction](#introduction)
+	1. [Getting Started](#getting-started)
+	2. [Getting Oriented](#getting-oriented)
+	3. [PromQL Metrics](#promql-metrics)
+	4. [PromQL Queries](#promql-queries)
+2. [Hands On Learning](#hands-on-learning)
+	1. [Activity](#activity)
+	2. [Challenge](#challenge)
+	3. [Additional Resources](#additional-resources)
+3. [Authors](#authors)
+4. [License](#license)
 
 ## Introduction to Prometheus
 
